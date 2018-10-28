@@ -102,3 +102,11 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+#Venv exclusions
+/bin
+/include
+/lib
+/lib64
+/share
+pyvenv.cfg
