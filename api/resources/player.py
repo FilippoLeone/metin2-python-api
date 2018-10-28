@@ -7,5 +7,5 @@ class Player(Resource):
     def put(self):
         pass
 
-    def get(self):
-        return {'hello': 'player'}
+    def get(self, id):
+        ToWebSite.get_player(id)
