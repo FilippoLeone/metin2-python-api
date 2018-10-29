@@ -1,19 +1,32 @@
 from flask import Flask
 from flask_restful import Api
 from resources import account, common, player, log
+from database import connection
+from database.communicationmanager import ApiToWebSite,ToGameServer
 
 app = Flask(__name__)
 
 api = Api(app)
 
-# Initializing all the controllers.
-# Initialized once.
-AccountController = account.AccountController()
-PlayerController = player.PlayerController()
-@app.route("/account/<string:id>")
-def getAccount(id):
-	return str(AccountController.get(id))
+# Initializing all the classes.
+DatabaseModule = connection.Database()
+DatabaseModule.connect("localhost", "root", "123", "account")
 
+#initialize Modules
+ApiToWebsite = ApiToWebSite(DatabaseModule)
+
+#initialize Controllers
+AccountController = account.AccountController(ApiToWebsite)
+PlayerController = player.PlayerController(ApiToWebsite)
+
+
+
+@app.route("/account/<string:param>")
+def getAccount(param):
+	return str(AccountController.get(param))
+@app.route("/player/<string:id>")
+def getPlayer(id):
+	return str(PlayerController.get(id))
 @app.route("/account/register/<string:data>")
 def registerAccount(data):
 	return str(AccountController.register(data))
