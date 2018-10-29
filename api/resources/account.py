@@ -3,14 +3,18 @@ from flask import request
 from database.accountmanager import ToWebSite,ToGameServer
 
 
-class Account(Resource):  
-    def get(self, id):
-        ToWebSite.get_account(id)
+class AccountController(Resource):
+	def __init__(self):
+		self.website = ToWebSite()
+		print("Account Initialized.")
 
-class RegisterAccount(Resource):  
-    def put(self, id):
-        accounts_data = {}
-        accounts_data[id] = request.form['data']
-        ToGameServer.register(accounts_data[id])
+	def get(self, id):
+		return self.website.get_account(id)
+	def register(self, data):
+		#TODO: parse json data.
+		accounts_data = {}
+		accounts_data[data] = request.form['data']
+		ToGameServer.register(accounts_data[data])
+
 
 

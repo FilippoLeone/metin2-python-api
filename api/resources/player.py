@@ -1,6 +1,9 @@
 from flask_restful import Resource
+from database.playermanager import ToWebSite
 
-class Player(Resource):
+class PlayerController(Resource):
+    def __init__(self):
+        website = ToWebSite()
     def post(self):
         pass
     
@@ -8,4 +11,4 @@ class Player(Resource):
         pass
 
     def get(self, id):
-        ToWebSite.get_player(id)
+        self.website.get_player(id)
