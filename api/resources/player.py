@@ -1,6 +1,8 @@
 from flask_restful import Resource
 
-class Player(Resource):
+class PlayerController(Resource):
+    def __init__(self, ApiToWebsite):
+        self.website = ApiToWebsite
     def post(self):
         pass
     
@@ -8,4 +10,4 @@ class Player(Resource):
         pass
 
     def get(self, id):
-        ToWebSite.get_player(id)
+        return self.website.get_player(id)
