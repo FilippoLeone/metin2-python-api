@@ -1,4 +1,5 @@
-from database.connection import connect 
+from database.connection import connect
+import re
 # account.account
 
 # id,login,password,social_id,email,create_time,is_testor,status,securitycode,newsletter,
@@ -9,32 +10,48 @@ from database.connection import connect
 
 
 class ToWebSite:
-    def get_account(id):
-        conn = connect("account")
-        cursor = conn.cursor()
-        query = """select `login`,`availDt`,`status` from `account` where `id`={};""".format(id)
-        cursor.execute(query)
-        data = cursor.fetchone()
-        return data
-        # 1 == 'admin'
+	def __init__(self):
+		self.conn = connect("account")
+		print("ToWebSite Initiated.")
+
+	def get_account(self, id):
+		# TODO: check if the parameter is an id or login or email.
+		if not re.match(r"[1-9]+", id) and \
+			not re.match(r"[A-Za-z1-9]+", id) and \
+			not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", id):
+			print("doesn't match any of the criteria given.")
+			return "The ID entered is not correct."
+
+		cursor = self.conn.cursor()
+		query = """select `login`,`availDt`,`status` from `account` where `id`='{}' or login='{}';""".format(id, id)
+		cursor.execute(query)
+		data = cursor.fetchone()
+		columns = cursor.description
+		result = {}
+		i = 0
+		for value in data:
+			result[columns[i][0]] = value
+			i += 1
+		return result
+		# 1 == 'admin'
 
 
 
 class ToGameServer:
-    def register(data):
-        print(data)
+	def register(self, data):
+		print(data)
 
-    def change_status(data):
-        pass
+	def change_status(self, data):
+		pass
 
-    def delete(data):
-        pass
+	def delete(self, data):
+		pass
 
-    def apply_premium(data):
-        pass
+	def apply_premium(data):
+		pass
 
-    def password_change(data):
-        pass
+	def password_change(data):
+		pass
 
 
 
